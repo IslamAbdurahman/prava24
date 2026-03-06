@@ -1,5 +1,6 @@
 import AttemptTimer from '@/components/practice/AttemptTimer';
 import FinishAttemptModal from '@/components/practice/FinishAttemptModal';
+import { useTelegramBackButton, useTelegramHaptic } from '@/hooks/use-telegram';
 import { cn } from '@/lib/utils';
 import { Attempt, AttemptAnswer } from '@/types';
 import { router } from '@inertiajs/react';
@@ -13,6 +14,10 @@ interface Props {
 export default function ExamInterface({ attempt }: Props) {
     const { t } = useTranslation();
     const [currentIndex, setCurrentIndex] = useState(0);
+    const haptic = useTelegramHaptic();
+
+    // Telegram BackButton — orqaga qaytish
+    useTelegramBackButton(route('attempts.index'));
 
     // Modal holatlari
     const [showExplanation, setShowExplanation] = useState(false);
@@ -38,6 +43,13 @@ export default function ExamInterface({ attempt }: Props) {
     const handleAnswerSelect = (answerId: number) => {
         const selectedAnswer = question?.answers?.find((a) => a.id === answerId);
         setIsCorrect(!!selectedAnswer?.is_correct);
+
+        // Haptic feedback
+        if (selectedAnswer?.is_correct) {
+            haptic.success();
+        } else {
+            haptic.error();
+        }
 
         router.patch(
             route('attempt_answers.update', currentAttemptAnswer.id),
@@ -137,7 +149,7 @@ export default function ExamInterface({ attempt }: Props) {
                                     key={ans.id}
                                     onClick={() => setCurrentIndex(idx)}
                                     className={cn(
-                                        'flex aspect-square h-auto w-full items-center justify-center rounded text-[9px] font-bold transition-all sm:h-7 sm:w-9 lg:h-8 lg:w-10 lg:text-xs',
+                                        'flex aspect-square h-auto w-full items-center justify-center rounded text-[11px] font-bold transition-all sm:h-7 sm:w-9 lg:h-8 lg:w-10 lg:text-xs',
                                         currentIndex === idx
                                             ? 'bg-blue-600 text-white ring-1 ring-blue-400 lg:ring-2'
                                             : 'bg-muted text-muted-foreground',

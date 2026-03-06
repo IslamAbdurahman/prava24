@@ -34,7 +34,7 @@ export default function Dashboard() {
                 {/* 🌈 Welcome Header - Ixchamroq */}
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col">
-                        <h1 className="text-xl font-black tracking-tight text-slate-900 md:text-3xl dark:text-white">
+                        <h1 className="text-xl font-extrabold tracking-tight text-slate-900 md:text-3xl dark:text-white">
                             {user.name.split(' ')[0]}! 👋
                         </h1>
                         <p className="text-xs text-slate-500 md:text-base dark:text-slate-400">{t('check_your_progress_and_scores')}</p>
@@ -57,12 +57,12 @@ export default function Dashboard() {
                         <div className="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-blue-600/20 blur-2xl" />
                         <div className="relative z-10 flex h-full flex-col justify-between">
                             <div>
-                                <p className="text-[10px] font-black tracking-[0.15em] text-blue-400 uppercase opacity-90">
+                                <p className="text-xs font-bold tracking-wider text-blue-400 uppercase opacity-90">
                                     {t('exam_attempts.title')}
                                 </p>
                                 <div className="mt-1 flex items-baseline gap-2">
-                                    <span className="text-4xl font-black tracking-tighter tabular-nums">{user.attempts_count ?? 0}</span>
-                                    <span className="text-xs font-bold text-slate-500">{t('attempts_unit', 'urinish')}</span>
+                                    <span className="text-4xl font-extrabold tracking-tighter tabular-nums">{user.attempts_count ?? 0}</span>
+                                    <span className="text-xs font-semibold text-slate-500">{t('attempts_unit', 'urinish')}</span>
                                 </div>
                             </div>
 
@@ -73,7 +73,7 @@ export default function Dashboard() {
 
                                 return (
                                     <div className="mt-6">
-                                        <div className="mb-2 flex justify-between text-[11px] font-bold">
+                                        <div className="mb-2 flex justify-between text-xs font-semibold">
                                             <span className="text-slate-400">{t('accuracy', 'Natija')}</span>
                                             <span className="text-blue-400">{accuracy}%</span>
                                         </div>
@@ -99,8 +99,8 @@ export default function Dashboard() {
                             <LucideClipboardList className="h-6 w-6" />
                         </div>
                         <div className="relative z-10">
-                            <div className="text-[14px] leading-tight font-black tracking-tight md:text-xl">{t('sidebar.ticket')}</div>
-                            <div className="mt-1.5 flex items-center text-[9px] font-bold tracking-widest uppercase opacity-80">
+                            <div className="text-sm leading-tight font-bold tracking-tight md:text-xl">{t('sidebar.ticket')}</div>
+                            <div className="mt-1.5 flex items-center text-[11px] font-semibold tracking-wide uppercase opacity-80">
                                 {t('view_all')} <LucideChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
                             </div>
                         </div>
@@ -116,8 +116,8 @@ export default function Dashboard() {
                             <LucideShapes className="h-6 w-6" />
                         </div>
                         <div className="relative z-10">
-                            <div className="text-[14px] leading-tight font-black tracking-tight md:text-xl">{t('road_signs')}</div>
-                            <div className="mt-1.5 flex items-center text-[9px] font-bold tracking-widest uppercase opacity-80">
+                            <div className="text-sm leading-tight font-bold tracking-tight md:text-xl">{t('road_signs')}</div>
+                            <div className="mt-1.5 flex items-center text-[11px] font-semibold tracking-wide uppercase opacity-80">
                                 {t('view_all')} <LucideChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
                             </div>
                         </div>
@@ -133,8 +133,8 @@ export default function Dashboard() {
                             <LucideSplit className="h-6 w-6" />
                         </div>
                         <div className="relative z-10">
-                            <div className="text-[14px] leading-tight font-black tracking-tight md:text-xl">{t('road_lines')}</div>
-                            <div className="mt-1.5 flex items-center text-[9px] font-bold tracking-widest uppercase opacity-80">
+                            <div className="text-sm leading-tight font-bold tracking-tight md:text-xl">{t('road_lines')}</div>
+                            <div className="mt-1.5 flex items-center text-[11px] font-semibold tracking-wide uppercase opacity-80">
                                 {t('view_all')} <LucideChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
                             </div>
                         </div>
@@ -144,36 +144,44 @@ export default function Dashboard() {
                 <div className={''}>
                     <AttemptsChart attempts={user.attempts ?? []} />
                 </div>
-                {(daily_users.length > 0 || daily_attempts.length > 0) && (
-                    <div className={''}>
-                        <DailyStatsChart dailyUsers={daily_users} dailyAttempts={daily_attempts} />
-                    </div>
-                )}
-                {today_hourly_attempts.length > 0 && (
-                    <>
+                {
+                    (daily_users.length > 0 || daily_attempts.length > 0) && (
                         <div className={''}>
-                            <HourlyAttemptsChart
-                                hourlyAttempts={today_hourly_attempts}
-                                title={t('today_hourly_stats', 'Bugungi soatbay statistika')}
-                            />
+                            <DailyStatsChart dailyUsers={daily_users} dailyAttempts={daily_attempts} />
                         </div>
-                    </>
-                )}
-                {weekly_attempts.length > 0 && (
-                    <>
-                        <div className={''}>
-                            <WeeklyAttemptsChart weeklyAttempts={weekly_attempts} title={t('weekly_stats', 'Haftalik statistika')} />
-                        </div>
-                    </>
-                )}
-                {hourly_attempts.length > 0 && (
-                    <>
-                        <div className={''}>
-                            <HourlyAttemptsChart hourlyAttempts={hourly_attempts} title={t('hourly_stats', 'Soatbay statistika')} />
-                        </div>
-                    </>
-                )}
-            </div>
-        </AppLayout>
+                    )
+                }
+                {
+                    today_hourly_attempts.length > 0 && (
+                        <>
+                            <div className={''}>
+                                <HourlyAttemptsChart
+                                    hourlyAttempts={today_hourly_attempts}
+                                    title={t('today_hourly_stats', 'Bugungi soatbay statistika')}
+                                />
+                            </div>
+                        </>
+                    )
+                }
+                {
+                    weekly_attempts.length > 0 && (
+                        <>
+                            <div className={''}>
+                                <WeeklyAttemptsChart weeklyAttempts={weekly_attempts} title={t('weekly_stats', 'Haftalik statistika')} />
+                            </div>
+                        </>
+                    )
+                }
+                {
+                    hourly_attempts.length > 0 && (
+                        <>
+                            <div className={''}>
+                                <HourlyAttemptsChart hourlyAttempts={hourly_attempts} title={t('hourly_stats', 'Soatbay statistika')} />
+                            </div>
+                        </>
+                    )
+                }
+            </div >
+        </AppLayout >
     );
 }

@@ -26,7 +26,7 @@ const ActiveTicketTable = ({ tickets }: { tickets: Ticket[] }) => {
                 >
                     {/* Header: ID & Status */}
                     <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-3 py-2 dark:border-gray-800 dark:bg-gray-800/50">
-                        <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500">#{String(index + 1).padStart(2, '0')}</span>
+                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500">#{String(index + 1).padStart(2, '0')}</span>
                         {item.is_active ? (
                             <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
                         ) : (
@@ -44,17 +44,17 @@ const ActiveTicketTable = ({ tickets }: { tickets: Ticket[] }) => {
                         {/* Stats & Date */}
                         <div className="mt-auto border-t border-gray-100 pt-3 dark:border-gray-800">
                             <div className="mb-1 flex items-center justify-between">
-                                <span className="text-[10px] tracking-tighter text-gray-400 uppercase dark:text-gray-500">
+                                <span className="text-xs tracking-tight text-gray-400 uppercase dark:text-gray-500">
                                     {t('question')} ({item.questions_count})
                                 </span>
-                                <span className="text-sm font-black text-gray-700 dark:text-gray-200">
+                                <span className="text-sm font-bold text-gray-700 dark:text-gray-200">
                                     {t('attempt')} ({item.attempts_count})
                                 </span>
                             </div>
 
                             <div className="flex items-center gap-1 text-gray-400 dark:text-gray-500">
                                 <Calendar className="h-3 w-3" />
-                                <span className="text-[10px] font-medium">{new Date(item.created_at).toLocaleDateString()}</span>
+                                <span className="text-xs font-medium">{new Date(item.created_at).toLocaleDateString()}</span>
                             </div>
                         </div>
                     </div>

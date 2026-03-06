@@ -1,4 +1,5 @@
 import AttemptAnswerTable from '@/components/attempt/AttemptAnswerTable';
+import { useTelegramBackButton } from '@/hooks/use-telegram';
 import AppLayout from '@/layouts/app-layout';
 import { type Attempt, type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
@@ -8,7 +9,10 @@ export default function AttemptShow() {
     const { attempt } = usePage<{
         attempt: Attempt;
     }>().props;
-    const { t } = useTranslation(); // Using the translation hook
+    const { t } = useTranslation();
+
+    // Telegram BackButton
+    useTelegramBackButton(route('attempts.index'));
 
     const breadcrumbs: BreadcrumbItem[] = [
         {

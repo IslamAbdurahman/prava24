@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -18,6 +18,27 @@
             if (WebApp.platform === "web" || WebApp.platform === "tdesktop") {
                 WebApp.requestFullscreen();
             }
+
+            // 🎨 Telegram tema ranglarini sinxronlashtirish
+            const tp = WebApp.themeParams || {};
+            const root = document.documentElement;
+            if (tp.bg_color) root.style.setProperty('--tg-bg', tp.bg_color);
+            if (tp.text_color) root.style.setProperty('--tg-text', tp.text_color);
+            if (tp.hint_color) root.style.setProperty('--tg-hint', tp.hint_color);
+            if (tp.link_color) root.style.setProperty('--tg-link', tp.link_color);
+            if (tp.button_color) root.style.setProperty('--tg-button', tp.button_color);
+            if (tp.button_text_color) root.style.setProperty('--tg-button-text', tp.button_text_color);
+            if (tp.secondary_bg_color) root.style.setProperty('--tg-secondary-bg', tp.secondary_bg_color);
+
+            // 🌙 Dark mode ni Telegram'dan olish
+            if (WebApp.colorScheme === 'dark') {
+                root.classList.add('dark');
+            } else {
+                root.classList.remove('dark');
+            }
+
+            // Telegram ichida ekanligini belgilash
+            root.dataset.telegram = 'true';
         }
     </script>
 
@@ -55,7 +76,7 @@
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900" rel="stylesheet" />
 
     @routes
     @viteReactRefresh
