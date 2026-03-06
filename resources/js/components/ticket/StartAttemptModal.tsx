@@ -50,10 +50,13 @@ export default function StartAttemptModal({ ticket }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <button
-                    className={`${baseButton} flex w-full items-center justify-center gap-2 bg-green-600 text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600`}
+                    className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-[14px] bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-3 sm:py-2.5 text-sm font-bold text-white shadow-lg shadow-emerald-500/30 ring-1 ring-white/20 transition-all hover:scale-[1.02] hover:shadow-emerald-500/40 active:scale-95 dark:from-emerald-600 dark:to-teal-700 dark:ring-white/10"
                 >
-                    <IoPlayCircleOutline className="h-5 w-5" />
-                    {t('start')}
+                    {/* Yaltiroq effekt (Shine effect on hover) */}
+                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-all duration-700 ease-in-out group-hover:translate-x-full" />
+
+                    <IoPlayCircleOutline className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                    <span className="relative z-10 tracking-wide">{t('start')}</span>
                 </button>
             </DialogTrigger>
 
