@@ -1,6 +1,7 @@
 import StartAttemptModal from '@/components/ticket/StartAttemptModal';
+import { cn } from '@/lib/utils';
 import { Ticket } from '@/types';
-import { Calendar, CheckCircle2, ClipboardList, XCircle } from 'lucide-react';
+import { Calendar, CheckCircle2, ClipboardList, LayersIcon, XCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const ActiveTicketTable = ({ tickets }: { tickets: Ticket[] }) => {
@@ -17,50 +18,67 @@ const ActiveTicketTable = ({ tickets }: { tickets: Ticket[] }) => {
     }
 
     return (
-        /* grid-cols-2 sets the mobile view to 2 columns */
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        /* grid-cols-1 mobilda (telegram app) 1 ta ustun bo'lishi chiroyliroq (batafsil ma'lumot sig'adi) */
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {tickets.map((item, index) => (
                 <div
                     key={item.id}
-                    className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+                    className="group relative flex flex-col overflow-hidden rounded-[24px] bg-white p-4 shadow-sm ring-1 ring-gray-100 transition-all hover:shadow-md sm:p-5 dark:bg-[#111] dark:ring-gray-800"
                 >
-                    {/* Header: ID & Status */}
-                    <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-3 py-2 dark:border-gray-800 dark:bg-gray-800/50">
-                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500">#{String(index + 1).padStart(2, '0')}</span>
-                        {item.is_active ? (
-                            <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
-                        ) : (
-                            <XCircle className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
-                        )}
-                    </div>
+                    {/* Soft background glow */}
+                    <div className="pointer-events-none absolute -right-6 -top-6 h-32 w-32 rounded-full bg-blue-500/10 blur-3xl transition-all group-hover:bg-blue-500/20 dark:bg-blue-500/15" />
 
-                    {/* Body: Content */}
-                    <div className="flex flex-1 flex-col p-3">
-                        <h3 className="mb-1 line-clamp-1 text-sm font-bold text-gray-900 sm:text-base dark:text-white">{item.title}</h3>
-                        <p className="mb-3 line-clamp-2 text-xs leading-tight text-gray-500 dark:text-gray-400">{item.description}</p>
-
-                        <StartAttemptModal ticket={item} />
-
-                        {/* Stats & Date */}
-                        <div className="mt-auto border-t border-gray-100 pt-3 dark:border-gray-800">
-                            <div className="mb-1 flex items-center justify-between">
-                                <span className="text-xs tracking-tight text-gray-400 uppercase dark:text-gray-500">
-                                    {t('question')} ({item.questions_count})
-                                </span>
-                                <span className="text-sm font-bold text-gray-700 dark:text-gray-200">
-                                    {t('attempt')} ({item.attempts_count})
-                                </span>
+                    {/* Header */}
+                    <div className="relative z-10 mb-3 flex items-start justify-between gap-2">
+                        <div className="flex flex-col gap-1">
+                            <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-blue-500 dark:text-blue-400">
+                                <LayersIcon className="h-3 w-3" />
+                                {t('ticket')} #{String(index + 1).padStart(2, '0')}
                             </div>
-
-                            <div className="flex items-center gap-1 text-gray-400 dark:text-gray-500">
-                                <Calendar className="h-3 w-3" />
-                                <span className="text-xs font-medium">{new Date(item.created_at).toLocaleDateString()}</span>
-                            </div>
+                            <h3 className="line-clamp-2 text-base font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
+                                {item.title}
+                            </h3>
+                        </div>
+                        <div
+                            className={cn(
+                                "flex shrink-0 items-center justify-center rounded-full p-1.5 backdrop-blur-sm",
+                                item.is_active
+                                    ? "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20"
+                                    : "bg-red-50 text-red-600 ring-1 ring-red-100 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20"
+                            )}>
+                            {item.is_active ? <CheckCircle2 className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
                         </div>
                     </div>
 
-                    {/* Hover Decoration */}
-                    <div className="absolute bottom-0 left-0 h-1 w-0 bg-blue-500 transition-all group-hover:w-full" />
+                    {/* Description */}
+                    <p className="relative z-10 mb-5 line-clamp-2 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+                        {item.description}
+                    </p>
+
+                    <div className="relative z-10 mt-auto flex flex-col gap-4">
+                        {/* Stats Row */}
+                        <div className="flex w-full items-center gap-2 text-[11px] font-semibold text-gray-600 dark:text-gray-300">
+                            <div className="flex flex-1 items-center gap-1.5 rounded-xl bg-gray-50/80 px-3 py-2 ring-1 ring-gray-100 dark:bg-gray-800/40 dark:ring-gray-800">
+                                <ClipboardList className="h-3.5 w-3.5 shrink-0 text-blue-500" />
+                                <div className="flex flex-col">
+                                    <span className="text-[9px] font-medium text-gray-400 uppercase leading-none mb-0.5">{t('question')}</span>
+                                    <span className="leading-none">{item.questions_count}</span>
+                                </div>
+                            </div>
+                            <div className="flex flex-1 items-center gap-1.5 rounded-xl bg-gray-50/80 px-3 py-2 ring-1 ring-gray-100 dark:bg-gray-800/40 dark:ring-gray-800">
+                                <Calendar className="h-3.5 w-3.5 shrink-0 text-orange-500" />
+                                <div className="flex flex-col">
+                                    <span className="text-[9px] font-medium text-gray-400 uppercase leading-none mb-0.5">{t('attempt')}</span>
+                                    <span className="leading-none">{item.attempts_count}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Button / Action */}
+                        <div className="w-full">
+                            <StartAttemptModal ticket={item} />
+                        </div>
+                    </div>
                 </div>
             ))}
         </div>
